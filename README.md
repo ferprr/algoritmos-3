@@ -1,0 +1,2 @@
+# Planejamento de viagem turística
+Projeto criado para a disciplina de Algoritmos 1 da UFMG, implementado para solucionar problemas hipotéticos para o planejamento de uma viagem para um destino turístico.
