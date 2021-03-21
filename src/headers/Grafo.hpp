@@ -9,7 +9,7 @@ class Grafo {
     int qtde_nos;
     int tempo_maximo;
     int maximo_descontos;
-    int custo_minimo;
+    float custo_minimo;
     No *trajeto;
 
     public:

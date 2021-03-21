@@ -35,13 +35,19 @@ void Grafo::print_grafo(){
 void Grafo::caminha_grafo(){
     int temp, count;
     temp = 0;
-    count = 0;
+    count = 1;
+    cout << "descontos: " << maximo_descontos << endl;
+    cout << "tempo maximo: "  << tempo_maximo << endl;
+
     for(int i=0; i<qtde_nos; i++){
-        temp = temp + trajeto[i].get_tempo();
-        if(temp < tempo_maximo && count < maximo_descontos) {
-            if (trajeto[i].get_desconto() == 0){
+        cout << "custo: " << custo_minimo << endl;
+        cout << "temp: "  << temp << endl;
+        cout << "count: " << count << endl;
+
+        if(temp < tempo_maximo && count <= maximo_descontos) {
+            if (trajeto[i].get_desconto() == 0.00){
                 custo_minimo += trajeto[i].get_preco();
-            } else if (trajeto[i].get_desconto() == 1){
+            } else if (trajeto[i].get_desconto() == 1.00){
                 custo_minimo += 0;
             } else {
                 custo_minimo += trajeto[i].get_preco() * trajeto[i].get_desconto();
@@ -52,6 +58,7 @@ void Grafo::caminha_grafo(){
             custo_minimo += trajeto[i].get_preco();
             temp = 0;
         }
+        temp += trajeto[i].get_tempo();
     }
     cout << "custo minimo: " << custo_minimo;
 }

@@ -15,7 +15,7 @@ void No::get_desconto_tempo_e_preco(){
     cout << "desconto: " << desconto << " tempo: " << tempo << " preco: " << preco;
     cout <<  endl;
 }
-int No::get_desconto(){
+float No::get_desconto(){
     return this->desconto;
 }
 int No::get_preco(){
