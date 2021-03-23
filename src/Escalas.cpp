@@ -8,11 +8,11 @@ Escalas::Escalas(int n, int d, int t){ //inicializando variáveis e vetores
     this->qtde_escalas = n;
     this->maximo_descontos = d;
     this->tempo_maximo = t;
-    this->custo_minimo = 0;
     this->trajeto = new int[n];
     this->tempo = new int[n];
-    this->descontos = new float[n];
+    this->descontos = new double[d];
     this->precos = new int[n];
+    this->custo_acumulado = new double[n]; //vetor auxiliar para custo acumulado
 
     inicializa_escalas();
 }
@@ -32,14 +32,13 @@ void Escalas::inicializa_escalas(){ //inicializando vetores
     for(int i=0; i<qtde_escalas+1; i++) {
         tempo[i] = 0; 
     }
-}
-void Escalas::set_descontos(float d, int i){
-    if(i==0){
-        descontos[i] = d; //armazenando desconto da escala i
-    } else {
-        descontos[i] = descontos[i-1] + d; //armazenando descontos acumulados
+    custo_acumulado[0] = 0;
+    for(int k=1; k<qtde_escalas+1; k++){
+        custo_acumulado[k]= 999999;
     }
-    
+}
+void Escalas::set_descontos(double d, int i){
+    descontos[i] = d; //armazenando desconto da escala i
 }
 void Escalas::set_preco(int p, int i){
     precos[i] = p; //armazenando preço do bilhete da escala i
@@ -56,30 +55,34 @@ void Escalas::print_escalas(){
     for(int i=0; i<qtde_escalas; i++){
         cout << "Escala " << i+1 << ": " << endl;
         cout << "Preco: " << precos[i] << endl;
-        cout << "Desconto: " << descontos[i] << endl;
+        //cout << "Desconto: " << descontos[i] << endl;
         cout << "Tempo: " << tempo[i] << endl;
     }
 }
 void Escalas::percorre_escalas(){
-    int temp, j, desconto_acumulado;
+    int temp, j;
+    double desconto_acumulado, custo_minimo;
 
-    float* custo_acumulado = new float[qtde_escalas]; //vetor auxiliar para custo acumulado
-
-    for(int k=1; k<qtde_escalas; k++){
-        custo_acumulado[k]= 999999;
-    }
-    custo_acumulado[0] = 0;
     for(int i=0; i<qtde_escalas; i++){
         custo_minimo = custo_acumulado[i];
         temp = 0;
         desconto_acumulado = 0;
+        cout << "i: " << i << endl;
         for(int j = 0; j < maximo_descontos; j++){
             if(temp < tempo_maximo && i+j < qtde_escalas){
-                custo_minimo = custo_minimo + precos[i+j] * (1 - descontos[j]);
+                cout << "cdccde" << endl;
+                desconto_acumulado += descontos[j];
+                custo_minimo += precos[i+j] * (100 - desconto_acumulado);
                 custo_acumulado[i+j+1] = min(custo_acumulado[i+j+1], custo_minimo);
+                cout << "custo acumulado" << custo_acumulado[i+j+1] << endl;
             }
-            temp = temp + tempo[i+j];
+            temp += tempo[i+j+1];
+            cout << "j: " << j << endl;
         }
     }
-    cout << "custo minimo: " << custo_minimo;
+
+    double custo = custo_acumulado[qtde_escalas]/100.00;
+    cout << fixed;
+    cout.precision(2);
+    cout << "custo acumulado: " << custo << endl;
 }
