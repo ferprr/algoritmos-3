@@ -1,5 +1,5 @@
 #include <iostream>
-#include "headers/Grafo.hpp"
+#include "headers/Escalas.hpp"
 
 using namespace std;
 
@@ -8,20 +8,29 @@ int main() {
     int n, d, t;
     cin >> n >> d >> t; //leitura qtde de escalas, qtde máxima de escalas com descontos cumulativos no intervalo t e tempo máximo para sua aplicação
 
-    Grafo trajeto(n, d, t);
+    Escalas sistema_transporte(n, d, t);
 
     for (int i=0; i<n; i++) {
-        int di;
+        float di;
         cin >> di; //leitura da qtde de desconto fornecido na escala i
-        trajeto.set_descontos(di, i);
+        if(di/100==0.00){
+            sistema_transporte.set_descontos(1, i);
+        } else if(di/100==1.00){
+            sistema_transporte.set_descontos(0, i);
+        } else {
+            sistema_transporte.set_descontos(di/100, i);
+        }
+        
     }
 
     for (int i=0; i<n; i++) {
-        int ti, ci;
+        int ti, ci, temp=0;
         cin >> ti >> ci; //leitura do tempo gasto no translado da escala i e o preço do bilhete desta escala
-        trajeto.set_preco_e_tempo(ci, ti, i);
+        temp += ti;
+        sistema_transporte.set_preco(ci, i);
+        sistema_transporte.set_tempo(temp, i+1);
     }
 
-    trajeto.print_grafo();
-    trajeto.caminha_grafo();
+    sistema_transporte.print_grafo();
+    sistema_transporte.percorre_escalas();
 }
