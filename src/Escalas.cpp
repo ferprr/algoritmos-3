@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Escalas::Escalas(int n, int d, int t){
+Escalas::Escalas(int n, int d, int t){ //inicializando variáveis e vetores
     this->qtde_escalas = n;
     this->maximo_descontos = d;
     this->tempo_maximo = t;
@@ -19,11 +19,11 @@ Escalas::Escalas(int n, int d, int t){
 Escalas::~Escalas(){
     delete this;
 }
-void Escalas::inicializa_escalas(){
-    for(int i=0; i<qtde_escalas+1; i++) {
+void Escalas::inicializa_escalas(){ //inicializando vetores
+    for(int i=0; i<qtde_escalas; i++) {
         trajeto[i] = 0; //populando casos base
     }
-    for(int i=0; i<qtde_escalas; i++) {
+    for(int i=0; i<maximo_descontos; i++) {
         descontos[i] = 0; 
     }
     for(int i=0; i<qtde_escalas; i++) {
@@ -34,20 +34,25 @@ void Escalas::inicializa_escalas(){
     }
 }
 void Escalas::set_descontos(float d, int i){
-    descontos[i] = d;
-}
-void Escalas::set_preco(int p, int i){
-    precos[i] = p;
-}
-void Escalas::set_tempo(int t, int i){
-    if(i==1){
-        tempo[i] = t;
+    if(i==0){
+        descontos[i] = d; //armazenando desconto da escala i
     } else {
-        tempo[i] = tempo[i-1] + t;
+        descontos[i] = descontos[i-1] + d; //armazenando descontos acumulados
     }
     
 }
-void Escalas::print_grafo(){
+void Escalas::set_preco(int p, int i){
+    precos[i] = p; //armazenando preço do bilhete da escala i
+}
+void Escalas::set_tempo(int t, int i){
+    if(i==1){
+        tempo[i] = t; //armazenando tempo de translado da escala i
+    } else {
+        tempo[i] = tempo[i-1] + t; //armazenando tempos acumulados 
+    }
+    
+}
+void Escalas::print_escalas(){
     for(int i=0; i<qtde_escalas; i++){
         cout << "Escala " << i+1 << ": " << endl;
         cout << "Preco: " << precos[i] << endl;
@@ -56,23 +61,24 @@ void Escalas::print_grafo(){
     }
 }
 void Escalas::percorre_escalas(){
-    int temp=0, desconto_atual=0, count=1;
+    int temp, j, desconto_acumulado;
 
-    for(int i=1; i<=qtde_escalas; i++){
-        for(int j=qtde_escalas; j>=1; j--){
-            
-            if(i-desconto_atual >= maximo_descontos || tempo[i] - tempo[desconto_atual] >= tempo_maximo) {
-                custo_minimo += 999999;
-            } else if(i == qtde_escalas-1){
-                custo_minimo += 0;
-            } else {
-                float aux1, aux2;
-                aux1 = precos[i+1] * descontos[i+1-i+1];
-                aux2 = precos[i+1] * descontos[i+1-desconto_atual];
-                custo_minimo += precos[i] * descontos[i-desconto_atual]  + min(aux1, aux2);
-                desconto_atual++;
+    float* custo_acumulado = new float[qtde_escalas]; //vetor auxiliar para custo acumulado
+
+    for(int k=1; k<qtde_escalas; k++){
+        custo_acumulado[k]= 999999;
+    }
+    custo_acumulado[0] = 0;
+    for(int i=0; i<qtde_escalas; i++){
+        custo_minimo = custo_acumulado[i];
+        temp = 0;
+        desconto_acumulado = 0;
+        for(int j = 0; j < maximo_descontos; j++){
+            if(temp < tempo_maximo && i+j < qtde_escalas){
+                custo_minimo = custo_minimo + precos[i+j] * (1 - descontos[j]);
+                custo_acumulado[i+j+1] = min(custo_acumulado[i+j+1], custo_minimo);
             }
-            cout << "custo acumulado: " << custo_minimo;
+            temp = temp + tempo[i+j];
         }
     }
     cout << "custo minimo: " << custo_minimo;

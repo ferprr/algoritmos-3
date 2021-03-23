@@ -21,7 +21,7 @@ class Escalas {
         void set_descontos(float d, int i);
         void set_preco(int p, int i);
         void set_tempo(int t, int i);
-        void print_grafo();
+        void print_escalas();
         void percorre_escalas();
 };
 
