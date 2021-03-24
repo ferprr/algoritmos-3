@@ -45,7 +45,7 @@ void Escalas::set_tempo(int t, int i){
     
 }
 void Escalas::percorre_escalas(){
-    int temp, desconto_acumulado, cust
+    int temp, desconto_acumulado, custo;
 
     for(int i=0; i<qtde_escalas; i++){
         custo = custo_acumulado[i]; //auxiliar recebe custo acumulado
