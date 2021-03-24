@@ -12,7 +12,6 @@ class Escalas {
     int* descontos;
     int* precos;
     int* tempo;
-    int* trajeto;
 
     public:
         Escalas(int n, int d, int t);

@@ -9,7 +9,6 @@ Escalas::Escalas(int n, int d, int t){ //inicializando variáveis e vetores
     this->qtde_escalas = n;
     this->maximo_descontos = d;
     this->tempo_maximo = t;
-    this->trajeto = new int[n];
     this->tempo = new int[n];
     this->descontos = new int[d];
     this->precos = new int[n];
@@ -21,9 +20,6 @@ Escalas::~Escalas(){
     delete this; //destrutor
 }
 void Escalas::inicializa_escalas(){ //inicializando vetores
-    for(int i=0; i<qtde_escalas; i++) {
-        trajeto[i] = 0; 
-    }
     for(int i=0; i<maximo_descontos; i++) {
         descontos[i] = 0; 
     }
@@ -49,7 +45,7 @@ void Escalas::set_tempo(int t, int i){
     
 }
 void Escalas::percorre_escalas(){
-    int temp, j, desconto_acumulado, custo;
+    int temp, desconto_acumulado, cust
 
     for(int i=0; i<qtde_escalas; i++){
         custo = custo_acumulado[i]; //auxiliar recebe custo acumulado
